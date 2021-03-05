@@ -1,0 +1,94 @@
+
+spring:
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080 #配置Sentinel dashboard地址
+        port: 8719 # 默认8719端口，加入被占用会从8719开始依次+1扫描，直至找到为被占用饿的端口
+    gateway:
+      routes:
+        - id: ware_route # 库存服务的路由
+          uri: lb://silincemall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
+        - id: product_route # 商品服务的路由
+          uri: lb://silincemall-product
+          predicates:
+            - Path=/api/product/**,/hello
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
+        - id: coupon_route # 优惠服务的路由
+          uri: lb://silincemall-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
+        - id: member_route # 会员服务的路由
+          uri: lb://silincemall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
+        # 第三方服务路由
+        - id: third-party-route
+          uri: lb://silincemall-third-party
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
+            # 前端项目发送的请求都带/api前缀
+        - id: admin_route # 后台管理系统的路由
+          uri: lb://renren-fast # lb 表示负载均衡
+          predicates:
+            # 按照路径断言 前端来的请求：http://localhost:88/api/captcha.jpg
+            # 真正能访问的路径： http://localhost:8080/renren-fast/captcha.jpg
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/renren-fast/$\{segment}
+
+        # nginx路由到商品服务
+        - id: silincemall_host_route
+          uri: lb://silincemall-product
+          predicates: # host路由断言
+            - Host=silincemall.com,item.silincemall.com
+        # nginx路由到检索服务
+        - id: silincemall_search_route
+          uri: lb://silincemall-search
+          predicates: # host路由断言
+            - Host=search.silincemall.com
+        # nginx路由到认证服务
+        - id: silincemall_auth_route
+          uri: lb://silincemall-auth-server
+          predicates: # host路由断言
+            - Host=auth.silincemall.com
+        # nginx路由到购物车服务
+        - id: silincemall_cart_route
+          uri: lb://silincemall-cart
+          predicates: # host路由断言
+            - Host=cart.silincemall.com
+        # nginx路由到订单服务
+        - id: silincemall_order_route
+          uri: lb://silincemall-order
+          predicates: # host路由断言
+            - Host=order.silincemall.com
+        # nginx路由到会员服务
+        - id: silincemall_member_route
+          uri: lb://silincemall-member
+          predicates: # host路由断言
+            - Host=member.silincemall.com
+        # nginx路由到秒杀服务
+        - id: silincemall_seckill_route
+          uri: lb://silincemall-seckill
+          predicates: # host路由断言
+            - Host=seckill.silincemall.com
+
+
