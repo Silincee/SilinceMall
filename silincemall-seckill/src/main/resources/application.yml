@@ -1,0 +1,43 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080 #配置Sentinel dashboard地址
+        port: 8719 # 默认8719端口，加入被占用会从8719开始依次+1扫描，直至找到为被占用饿的端口
+  application:
+    name: silincemall-seckill
+  redis:
+    host: 47.97.191.***
+  task:
+    execution:
+      pool:
+        core-size: 20
+        max-size: 50
+  session:
+    store-type: redis
+  rabbitmq:
+    addresses: 127.0.0.1
+    port: 5672
+    virtual-host: /
+  thymeleaf:
+    cache: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+server:
+  port: 25000
+
+logging:
+  level:
+    cn.silince.silincemall: debug
+
+feign:
+  sentinel:
+    enabled: true
