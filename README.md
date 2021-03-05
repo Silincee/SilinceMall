@@ -4,6 +4,14 @@ SilinceMall 项目是一套电商项目，包括前台商城系统以及后台�
 
 
 
+## 笔记说明
+
+[Silince商城—分布式基础](https://github.com/Silincee/SilinceMall/blob/main/note/Silince商城—分布式基础.md)
+
+[Silince商城—分布式高级](https://github.com/Silincee/SilinceMall/blob/main/note/Silince商城—分布式高级.md)
+
+
+
 ## 组织结构
 
 ```

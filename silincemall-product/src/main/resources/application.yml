@@ -18,8 +18,8 @@ spring:
         port: 8719 # 默认8719端口，加入被占用会从8719开始依次+1扫描，直至找到为被占用饿的端口
     # alibaba oss 对象存储配置
     alicloud:
-      access-key: LTAI4FyQDSt1MmZwnthHTPPs
-      secret-key: jPAQnMs76taIXIRNqoYWBFtdajzWB1
+      access-key: 
+      secret-key: 
       oss:
         endpoint: oss-cn-hangzhou.aliyuncs.com
 
