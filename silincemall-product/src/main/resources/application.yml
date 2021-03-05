@@ -1,0 +1,69 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+spring:
+  datasource:
+    username: ***
+    password: ***
+    url: jdbc:mysql://47.97.191.***:3306/silincemall_pms
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080 #配置Sentinel dashboard地址
+        port: 8719 # 默认8719端口，加入被占用会从8719开始依次+1扫描，直至找到为被占用饿的端口
+    # alibaba oss 对象存储配置
+    alicloud:
+      access-key: LTAI4FyQDSt1MmZwnthHTPPs
+      secret-key: jPAQnMs76taIXIRNqoYWBFtdajzWB1
+      oss:
+        endpoint: oss-cn-hangzhou.aliyuncs.com
+
+  application:
+    name: silincemall-product
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false # 开发期间关闭缓存
+  redis:
+    host: 47.97.191.***
+    port: 6379
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      key-prefix: CACHE_ # 指定缓存key的前缀，未配置则使用缓存的名字作为前缀
+      use-key-prefix: true # 默认使用前缀
+      cache-null-values: true # 是否缓存空值(防止缓存穿透）
+  session:
+    store-type: redis
+
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml  # classpath*:则表示不止扫描自己的类路径，包括我应用的其他依赖的类路径
+  global-config:
+    db-config:
+      id-type: auto # 配置主键自增
+      # 逻辑删除配置
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+
+server:
+  port: 10000
+
+logging:
+  level:
+    cn.silince.silincemall: info
+# 线程池配置
+silincemall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10
+feign:
+  sentinel:
+    enabled: true
