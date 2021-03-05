@@ -1,0 +1,58 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+spring:
+  datasource:
+    username: ***
+    password: ***
+    url: jdbc:mysql://47.97.191.***:3306/silincemall_oms
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: silincemall-order
+  rabbitmq:
+    addresses: 127.0.0.1
+    port: 5672
+    virtual-host: /
+    publisher-confirms: true # confirmCallback 确认模式
+    publisher-returns: true # 发送消息抵达队列确认
+    template:
+      mandatory: true # 只要抵达队列，以异步方式优先回调 returnconfirm
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动签收
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080 #配置Sentinel dashboard地址
+        port: 8719 # 默认8719端口，加入被占用会从8719开始依次+1扫描，直至找到为被占用饿的端口
+    alibaba:
+      seata:
+        tx-service-group: silincemall-order-fescar-service-group
+  thymeleaf:
+    cache: false
+  session:
+    store-type: redis
+  redis:
+    host: 47.97.191.***
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml  # classpath*:则表示不止扫描自己的类路径，包括我应用的其他依赖的类路径
+  global-config:
+    db-config:
+      id-type: auto # 配置主键自增
+feign:
+  sentinel:
+    enabled: true
+server:
+  port: 9000
+# 线程池配置
+silincemall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10
