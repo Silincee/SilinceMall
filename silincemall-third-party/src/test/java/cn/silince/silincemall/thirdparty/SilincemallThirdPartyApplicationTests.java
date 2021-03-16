@@ -49,6 +49,7 @@ class SilincemallThirdPartyApplicationTests {
         // 关闭OSSClient。
         ossClient.shutdown();
         System.out.println("文件上传完成");
+             
     }
 
     /**
